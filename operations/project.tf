@@ -10,6 +10,7 @@ locals {
     "dns.googleapis.com",
     "domains.googleapis.com",
     "iam.googleapis.com",
+    "iamcredentials.googleapis.com",
     "logging.googleapis.com",
     "run.googleapis.com",
     "secretmanager.googleapis.com",

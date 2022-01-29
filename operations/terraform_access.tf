@@ -36,9 +36,9 @@ resource "google_service_account_iam_binding" "admin-account-iam" {
   members            = var.terraform_impersonators
 }
 
-resource "google_storage_bucket_iam_member" "member" {
-  for_each = toset(var.terraform_impersonators)
-  bucket   = google_storage_bucket.tfstate.name
-  role     = "roles/storage.admin"
-  member   = each.key
-}
+# resource "google_storage_bucket_iam_member" "member" {
+#   for_each = toset(var.terraform_impersonators)
+#   bucket   = google_storage_bucket.tfstate.name
+#   role     = "roles/storage.admin"
+#   member   = each.key
+# }
