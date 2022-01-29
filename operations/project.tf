@@ -8,6 +8,7 @@ locals {
     "container.googleapis.com",
     "containerregistry.googleapis.com",
     "dns.googleapis.com",
+    "domains.googleapis.com",
     "iam.googleapis.com",
     "logging.googleapis.com",
     "run.googleapis.com",
@@ -22,19 +23,9 @@ locals {
 }
 
 resource "google_project_service" "gcp_project_services" {
-  count              = length(local.project_services)
-  service            = element(local.project_services, count.index)
+  for_each           = toset(local.project_services)
+  service            = each.key
   disable_on_destroy = true
 }
 
-# State bucket
-resource "google_storage_bucket" "tfstate" {
-  name          = "${var.project}-tfstate"
-  storage_class = "MULTI_REGIONAL"
-  location      = var.multiregion
-
-  versioning {
-    enabled = "true"
-  }
-}
 
