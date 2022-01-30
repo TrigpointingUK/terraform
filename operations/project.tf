@@ -8,6 +8,7 @@ locals {
   project_services = [
     "cloudbilling.googleapis.com",
     "cloudresourcemanager.googleapis.com",
+    "cloudscheduler.googleapis.com",
     "container.googleapis.com",
     "containerregistry.googleapis.com",
     "dns.googleapis.com",
@@ -19,6 +20,7 @@ locals {
     "secretmanager.googleapis.com",
     "servicenetworking.googleapis.com",
     "serviceusage.googleapis.com",
+    "siteverification.googleapis.com",
     "sqladmin.googleapis.com",
     "sql-component.googleapis.com",
     "storage-api.googleapis.com",

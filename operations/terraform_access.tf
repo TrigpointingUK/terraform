@@ -30,10 +30,18 @@ resource "google_project_iam_member" "terraform_project_roles" {
 }
 
 # Permit impersonation by admin users
-resource "google_service_account_iam_binding" "admin-account-iam" {
+resource "google_service_account_iam_binding" "admin-terraform-iam" {
   service_account_id = google_service_account.terraform.name
   role               = "roles/iam.serviceAccountTokenCreator"
-  members            = var.terraform_impersonators
+  members            = var.administrators
+}
+
+# Permit application-default login
+resource "google_project_iam_member" "admin-service-usage-iam" {
+  for_each = toset(var.administrators)
+  member   = each.key
+  project  = var.project
+  role     = "roles/serviceusage.serviceUsageConsumer"
 }
 
 # resource "google_storage_bucket_iam_member" "member" {

@@ -28,7 +28,7 @@ variable "tuk" {
   default     = "tuk"
 }
 
-variable "terraform_impersonators" {
-  description = "A list of users permitted to impersonate the terraform account"
+variable "administrators" {
+  description = "A list of users permitted to eg impersonate the terraform account"
   default     = ["user:teasel.ian@gmail.com"]
 }
