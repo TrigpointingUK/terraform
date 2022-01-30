@@ -1,13 +1,3 @@
-
-# Allow access to secrets
-resource "google_project_iam_member" "cloud_run_secret_iam" {
-  member   = "serviceAccount:${data.google_compute_default_service_account.default.email}"
-  role     = "roles/secretmanager.secretAccessor"
-  project  = var.project
-}
-
-
-# Allow public access to endpoints
 locals {
   cloudrun_services = [
     "api-tme",
@@ -17,6 +7,24 @@ locals {
   ]
 }
 
+# Service accounts
+resource "google_service_account" "cloudrun" {
+  for_each     = toset(local.cloudrun_services)
+  account_id   = each.key
+  display_name = "Cloud Run service accoount"
+}
+
+
+# Allow access to secrets
+resource "google_project_iam_member" "cloudrun_secret_iam" {
+  for_each = google_service_account.cloudrun
+  member   = "serviceAccount:${each.value.email}"
+  role     = "roles/secretmanager.secretAccessor"
+  project  = var.project
+}
+
+
+# Allow public access to endpoints
 resource "google_cloud_run_service_iam_member" "default" {
   for_each = toset(local.cloudrun_services)
   location = var.region
@@ -25,8 +33,6 @@ resource "google_cloud_run_service_iam_member" "default" {
   role     = "roles/run.invoker"
   member   = "allUsers"
 }
-
-
 
 
 # Map api.trigpointing.me domain
@@ -78,14 +84,14 @@ resource "google_cloud_run_domain_mapping" "api-tuk" {
 }
 
 ### NB DNS nameservers still at 123-reg, so this needs to be applied manually there
-resource "google_dns_record_set" "api-tuk" {
-  name = "api.${google_dns_managed_zone.tuk-zone.dns_name}"
-  type = "CNAME"
-  ttl  = 300
-  managed_zone = google_dns_managed_zone.tuk-zone.name
-  rrdatas = [google_cloud_run_domain_mapping.api-tuk.status[0].resource_records[0].rrdata]
-}
+# resource "google_dns_record_set" "api-tuk" {
+#   name = "api.${google_dns_managed_zone.tuk-zone.dns_name}"
+#   type = "CNAME"
+#   ttl  = 300
+#   managed_zone = google_dns_managed_zone.tuk-zone.name
+#   rrdatas = [google_cloud_run_domain_mapping.api-tuk.status[0].resource_records[0].rrdata]
+# }
 
-output "api_trigpointing_uk_cname" {
-    value = google_cloud_run_domain_mapping.api-tuk.status[0].resource_records[0].rrdata
-}
+# output "api_trigpointing_uk_cname" {
+#     value = google_cloud_run_domain_mapping.api-tuk.status[0].resource_records[0].rrdata
+# }

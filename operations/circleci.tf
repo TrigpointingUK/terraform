@@ -12,7 +12,6 @@ locals {
     "roles/run.developer",
   ]
 }
-
 resource "google_project_iam_member" "circleci_project_roles" {
   for_each = toset(local.circleci_project_roles)
   member   = "serviceAccount:${google_service_account.circleci.email}"
@@ -20,8 +19,9 @@ resource "google_project_iam_member" "circleci_project_roles" {
   role     = each.key
 }
 
-resource "google_service_account_iam_member" "circleci-compute-iam" {
-  service_account_id = data.google_compute_default_service_account.default.name
+resource "google_service_account_iam_member" "circleci-deploy-iam" {
+  for_each           = google_service_account.cloudrun
+  service_account_id = each.value.name
   role               = "roles/iam.serviceAccountUser"
   member             = "serviceAccount:${google_service_account.circleci.email}"
 }
