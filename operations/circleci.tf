@@ -8,7 +8,7 @@ resource "google_service_account" "circleci" {
 # Grant rights to CircleCI account
 locals {
   circleci_project_roles = [
-    "roles/artifactregistry.writer",
+    "roles/artifactregistry.repoAdmin",
     "roles/run.developer",
   ]
 }
