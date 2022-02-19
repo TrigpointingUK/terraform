@@ -2,46 +2,46 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.terraform.io/hashicorp/google" {
-  version     = "4.8.0"
-  constraints = "~> 4.8"
+  version     = "4.11.0"
+  constraints = ">= 4.1.0, ~> 4.8"
   hashes = [
-    "h1:2EwEiinufTyL/mQ4eQHu+UOwKaHUQfhhU//aA+CopwQ=",
-    "zh:08d1fbdaee6f9d615e09ab6244d5f8f1b76fd079fc4193822a9f5ac4344b3738",
-    "zh:27afa2e26921ca5b96e804b781792296e9a9d4ac533d6f87c3855ae68e28ef80",
-    "zh:2d1fe33d3c6daa85a9ba6608b99d9710c7fcd61199d249e353e82d5bf1a18280",
-    "zh:31b2c41dbe458d8b75068069bb05864027bd1b4a3f4c8e8b7cd7b9d1fe47be7b",
-    "zh:4001c5237a4fb383014b685077c12a0b9cdbac28dce0c707a9a4622d62ef06c9",
-    "zh:82c9ef3f72fa6a8fba163cff94b0f7fd0572724e991af5c7f389feaaf83298d8",
-    "zh:9524a6dc9d8b2cbcef53ca2c04e121899bb1947ff8d4f9569c3b01b1cb9f736a",
-    "zh:a33dcd5d8efef4dafaa331918c79b793be036420fc56c40bb3fb313fdb56db0d",
-    "zh:aa36241871cb5376c7ba8cb8b2ddbfc488c4231e5c0d10b2f421ffaa14c0b462",
-    "zh:cd2c1ffbab0c6e154ed2472edc2788bc2cb9db93848325e389a7157ebbb540de",
-    "zh:f350242dabb33035e2b49cd3e925c88c6bf4b73becfaff298d503e4c64e46271",
+    "h1:cXQcXr5dmBt2Gr0t/wflxYHOEW1OyM6+cUZI6Lp0uP0=",
+    "zh:095c627b2113e8449ab7adc854d13e521996d38f1f2ee2d51a52044e2aaf5ddf",
+    "zh:109c1ff0f51873ad4e734c1de0cc172f3c33b01b35099339f52c70a402c463a2",
+    "zh:18e6ac212be66678e1efb770d5a718969db98dd6e029c9b65932728f1754cf69",
+    "zh:550c1f671954cfc858b1d9067fb61ec9ee0024033fc4e22fd595eafc08184bd4",
+    "zh:90ddd99b1fc9488de4a0ff6108995a01645cd67d7cf97f712d5791d35019c3db",
+    "zh:a1844f823411e8df23b791d54c75961255b0ab12023b5f40c0cdac7f1864759e",
+    "zh:d4c07fd28cad663fc4a6073d5b967858a51fe04259e335e72293674682276dc4",
+    "zh:dfaa24c332794fda06d79fe81b5b48d107bb9b91aee9fa01a85c111c030c5748",
+    "zh:e74731908e670ad663b8e1d215d971131ef32d2d8bfd976399d6b477de36a66e",
+    "zh:fddb1f3399baaebcf1328e1a2bc69590904d43b9677b00e280a6880ee733dc1d",
+    "zh:ff64d718954e8134e5c51163d96d3fdd985d5b17f245484bd1b0c2e25239bd43",
   ]
 }
 
 provider "registry.terraform.io/hashicorp/google-beta" {
-  version     = "4.8.0"
-  constraints = "~> 4.8"
+  version     = "4.11.0"
+  constraints = ">= 4.1.0, ~> 4.8"
   hashes = [
-    "h1:eR5zLTbHGPFVLN+9zBAA2mh6tVOoGmatOvdi/o05oxE=",
-    "zh:1925468fbb25bbde8710feb80dc52e9f0321304d8bb464873528afb446bd6e79",
-    "zh:256865f0d6251b671a9ca9fd92f8bfa576b250fcf3b85491b6e7e4f690e79ab2",
-    "zh:54aa3afd4865d348fe82ac59fe0d505d1b0ae74f7690f225302c59e1c2bd1b67",
-    "zh:660c4e18f4e330274140a1a971847b3f52435355dfffcecd21a98c3791d89a6c",
-    "zh:82d356bd597f7dbcf15b830d4180601b18d3bedfdd6dbe7518e06fcab6abe4fc",
-    "zh:9791a7751b9c2966d8234637e47e28ae6027a6833d88b684764c70501dcbb0f2",
-    "zh:a07e0856924d7346e099727077f8d1652393995dca04df093ed4238c6ec0df13",
-    "zh:ad18e7f0f7dc5a0bec74e7a1da2fec83185808cb8eaac048bfb88594e317c5ca",
-    "zh:b1eaff77e657065f8ffba4423e1c1bda2d0b5b370ce88a1c18e814c1f2db3889",
-    "zh:d73ac7b0410c357a1f99f6e599d970e72c6aab7b29eace673f843cdfe5819af7",
-    "zh:e069e2fbc2c404b903b75fb8e6cbf0b5bd2b9b06269a87979593ec0630be2b02",
+    "h1:zQjKR9CdCaYpC1CRFjko829gdwzVE2q57BrX4/JQbt4=",
+    "zh:10e350fa0e0dd174e3e3920214098b44730285812b0b4fe3a1f304cf4c6a7253",
+    "zh:23af22281b98ec85306cbcd4ada208f320b213c09c75017ed801ae730d6eae3d",
+    "zh:4f64c37d6a12604f8885a8309ee6b3a6c9b83d8808c212a005f44ffab4f7b2d1",
+    "zh:61586d8609cd257d450cb942729e67463886bd299a9c0fa887043efd0d953553",
+    "zh:6e508cbda1fb901e1619d6184a21f9d9d2ce1c46dbc39aa5c58e69aeaed1e310",
+    "zh:70a9412d607226bd97af320d2b6d92b267a31e457f1821d70402a856fdc823ed",
+    "zh:732e7f293dc5a7bcb7d08503f3bc30fcd62417cf6887c0029033fb7c6fd6bc0d",
+    "zh:890e1b6f0b773b7397ece875fdf19da0ce663691960a211b5a92690841bc7135",
+    "zh:8a04a23ea141e2becede3cd68ef34d470829eeaca6fb0cb6d0c309a7d570c36c",
+    "zh:b48cb7026058fcffc4681738d4569fb094d41b7781285ef5a9af03402214e5b8",
+    "zh:ed16792fadf0146a3c6d24b794b8edd019c70bea2580bb679d59531c9750dd4d",
   ]
 }
 
 provider "registry.terraform.io/mrolla/circleci" {
   version     = "0.6.1"
-  constraints = "~> 0.6"
+  constraints = "~> 0.6.1"
   hashes = [
     "h1:YuQQzGd8r1dai9hHDbJDLBU2OVB6t5j6chc/Gg4xLvI=",
     "zh:3402c43ff20e9e34e7919495c21212b5ad162cea00feeb272e0644e26aaf8964",
