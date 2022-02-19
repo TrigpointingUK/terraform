@@ -12,7 +12,7 @@ module "gcr_cleaner" {
       project_id = var.project
       parameters = {
         grace      = "24h"
-        keep       = 5
+        keep       = 1
         tag_filter_all = "^([^t]|t(t|mt)*([^mt]|m[^et]))*(t(t|mt)*m?)?$"
       }
     },
@@ -22,7 +22,7 @@ module "gcr_cleaner" {
       project_id = var.project
       parameters = {
         grace      = "24h"
-        keep       = 5
+        keep       = 1
         tag_filter_all = "^([^t]|t(t|ut)*([^tu]|u[^kt]))*(t(t|ut)*u?)?$"
       }
     },
