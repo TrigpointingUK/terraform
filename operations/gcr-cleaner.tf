@@ -11,9 +11,9 @@ module "gcr_cleaner" {
       region     = var.region
       project_id = var.project
       parameters = {
-        # grace      = "24h"
-        keep       = 1
-        tag_filter_all = "^(?!.*(latest|tuk|tme|main)).*$"
+        grace      = "24h"
+        keep       = 5
+        tag_filter_all = "^([^t]|t(t|mt)*([^mt]|m[^et]))*(t(t|mt)*m?)?$"
       }
     },
     {
@@ -21,9 +21,9 @@ module "gcr_cleaner" {
       region     = var.region
       project_id = var.project
       parameters = {
-        # grace      = "24h"
-        keep       = 1
-        tag_filter_all = "^(?!.*(latest|tuk|tme|main)).*$"
+        grace      = "24h"
+        keep       = 5
+        tag_filter_all = "^([^t]|t(t|ut)*([^tu]|u[^kt]))*(t(t|ut)*u?)?$"
       }
     },
     {
@@ -31,9 +31,9 @@ module "gcr_cleaner" {
       region     = var.region
       project_id = var.project
       parameters = {
-        # grace      = "24h"
+        grace      = "24h"
         keep       = 1
-        tag_filter_all = "^(?!.*(latest|tuk|tme|main)).*$"
+        tag_filter_all = "^(.{1,2}|.{4,}|[^t])$"
       }
     }    
   ]
