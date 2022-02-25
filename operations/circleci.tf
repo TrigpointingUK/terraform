@@ -37,7 +37,7 @@ resource "google_service_account_key" "circleci" {
   public_key_type    = "TYPE_X509_PEM_FILE"
 }
 
-resource "circleci_environment_variable" "circleci" {
+resource "circleci_environment_variable" "api" {
   provider = circleci
 
   project = "api"
@@ -45,12 +45,25 @@ resource "circleci_environment_variable" "circleci" {
   value   = google_service_account_key.circleci.private_key
 }
 
+resource "circleci_environment_variable" "vue" {
+  provider = circleci
+
+  project = "vue"
+  name    = "GCLOUD_SERVICE_KEY"
+  value   = google_service_account_key.circleci.private_key
+}
+
+
 locals {
   gcr = "${var.region}-docker.pkg.dev"
   api_tag = "${var.region}-docker.pkg.dev/${var.project}/${google_artifact_registry_repository.images.repository_id}/tuk-api"
+  tme_vue_tag = "${var.region}-docker.pkg.dev/${var.project}/${google_artifact_registry_repository.images.repository_id}/tme-vue"
+  tuk_vue_tag = "${var.region}-docker.pkg.dev/${var.project}/${google_artifact_registry_repository.images.repository_id}/tuk-vue"
 }
 
-resource "circleci_environment_variable" "circleci_region" {
+### API
+
+resource "circleci_environment_variable" "api_region" {
   provider = circleci
 
   project = "api"
@@ -58,7 +71,7 @@ resource "circleci_environment_variable" "circleci_region" {
   value   = var.region
 }
 
-resource "circleci_environment_variable" "circleci_registry" {
+resource "circleci_environment_variable" "api_registry" {
   provider = circleci
 
   project = "api"
@@ -74,7 +87,56 @@ resource "circleci_environment_variable" "api_tag" {
   value   = local.api_tag
 }
 
-
 output "api_tag" {
   value = local.api_tag
+}
+
+### VUE
+
+resource "circleci_environment_variable" "vue_region" {
+  provider = circleci
+
+  project = "vue"
+  name    = "REGION"
+  value   = var.region
+}
+
+resource "circleci_environment_variable" "vue_registry" {
+  provider = circleci
+
+  project = "vue"
+  name    = "GCR"
+  value   = local.gcr
+}
+
+resource "circleci_environment_variable" "tme_vue_tag" {
+  provider = circleci
+
+  project = "vue"
+  name    = "TME_TAG"
+  value   = local.tme_vue_tag
+}
+
+resource "circleci_environment_variable" "tuk_vue_tag" {
+  provider = circleci
+
+  project = "vue"
+  name    = "TUK_TAG"
+  value   = local.tuk_vue_tag
+}
+
+resource "circleci_environment_variable" "tme_vue_auth0" {
+  provider = circleci
+
+  project = "vue"
+  name    = "TME_AUTH0_CLIENTID"
+  value   = "${file("tme_vue_auth0_clientid")}"
+}
+
+resource "circleci_environment_variable" "tuk_vue_auth0" {
+  provider = circleci
+
+  project = "vue"
+  name    = "TUK_AUTH0_CLIENTID"
+  value   = "${file("tuk_vue_auth0_clientid")}"
 }
