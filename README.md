@@ -1,4 +1,6 @@
 # terraform
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTrigpointingUK%2Fterraform.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FTrigpointingUK%2Fterraform?ref=badge_shield)
+
 
 IaC repo for TrigpointingUK
 
