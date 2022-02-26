@@ -1,6 +1,6 @@
 resource "auth0_rule" "add-email" {
-  name = "Add email to access token"
-  script = <<EOF
+  name    = "Add email to access token"
+  script  = <<EOF
 
 function addEmailToAccessToken(user, context, callback) {
   // This rule adds the authenticated user's email address to the access token.

@@ -55,8 +55,8 @@ resource "circleci_environment_variable" "vue" {
 
 
 locals {
-  gcr = "${var.region}-docker.pkg.dev"
-  api_tag = "${var.region}-docker.pkg.dev/${var.project}/${google_artifact_registry_repository.images.repository_id}/tuk-api"
+  gcr         = "${var.region}-docker.pkg.dev"
+  api_tag     = "${var.region}-docker.pkg.dev/${var.project}/${google_artifact_registry_repository.images.repository_id}/tuk-api"
   tme_vue_tag = "${var.region}-docker.pkg.dev/${var.project}/${google_artifact_registry_repository.images.repository_id}/tme-vue"
   tuk_vue_tag = "${var.region}-docker.pkg.dev/${var.project}/${google_artifact_registry_repository.images.repository_id}/tuk-vue"
 }
@@ -131,8 +131,8 @@ data "terraform_remote_state" "auth0" {
   backend = "gcs"
 
   config = {
-    bucket = "trigpointinguk-tfstate"
-    prefix = "trigpointinguk-auth0"
+    bucket                      = "trigpointinguk-tfstate"
+    prefix                      = "trigpointinguk-auth0"
     impersonate_service_account = "terraform@trigpointinguk.iam.gserviceaccount.com"
   }
 }

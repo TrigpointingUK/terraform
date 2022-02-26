@@ -9,7 +9,7 @@ resource "auth0_client" "tme-swagger" {
   # initiate_login_uri = "http://localhost/login"
   callbacks           = ["https://api.trigpointing.me/docs/oauth2-redirect.html", "http://localhost:3000/docs/oauth2-redirect.html"]
   allowed_logout_urls = []
-  web_origins         = []
+  web_origins         = ["https://api.trigpointing.uk/"]
   allowed_origins     = []
   oidc_conformant     = true
   grant_types         = ["authorization_code", "implicit", "refresh_token", "client_credentials"]
@@ -37,7 +37,20 @@ resource "auth0_client" "tme-swagger" {
   mobile {}
 }
 
+
+resource "google_secret_manager_secret" "tme-swagger" {
+  secret_id = "TME_SWAGGER_AUTH0_CLIENT_ID"
+  replication {
+    automatic = true
+  }
+  labels = {}
+}
+
+resource "google_secret_manager_secret_version" "tme-swagger" {
+  secret      = google_secret_manager_secret.tme-swagger.id
+  secret_data = auth0_client.tme-swagger.client_id
+}
+
 output "tme-swagger-client-id" {
   value = auth0_client.tme-swagger.client_id
-
 }

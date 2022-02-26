@@ -1,6 +1,6 @@
 resource "auth0_connection" "tme-users" {
-  name     = "tme-users"
-  enabled_clients = [ 
+  name = "tme-users"
+  enabled_clients = [
     auth0_client.tme-vue.id,
     auth0_client.tme-swagger.id,
     auth0_client.tdev-vue.id

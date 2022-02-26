@@ -1,6 +1,6 @@
 resource "auth0_connection" "tuk-users" {
-  name     = "tuk-users"
-  enabled_clients = [ 
+  name = "tuk-users"
+  enabled_clients = [
     auth0_client.tuk-vue.id
   ]
   strategy = "auth0"
