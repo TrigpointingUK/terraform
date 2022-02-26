@@ -1,6 +1,6 @@
-resource "auth0_resource_server" "tme-api" {
-  name        = "tme-api"
-  identifier  = "https://api.trigpointing.me"
+resource "auth0_resource_server" "tuk-api" {
+  name        = "tuk-api"
+  identifier  = "https://api.trigpointing.uk"
   signing_alg = "RS256"
 
   scopes {

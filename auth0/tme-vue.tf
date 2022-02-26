@@ -1,4 +1,4 @@
-resource "auth0_client" "tme" {
+resource "auth0_client" "tme-vue" {
   name                       = "tme-vue"
   description                = "Staging vue application"
   logo_uri                   = "https://trigpointing.me/TME-Logo.svg"
@@ -38,6 +38,6 @@ resource "auth0_client" "tme" {
 }
 
 output "tme-vue-client-id" {
-  value = auth0_client.tme.client_id
+  value = auth0_client.tme-vue.client_id
 
 }

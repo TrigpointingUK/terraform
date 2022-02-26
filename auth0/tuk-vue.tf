@@ -1,4 +1,4 @@
-resource "auth0_client" "tuk" {
+resource "auth0_client" "tuk-vue" {
   name                       = "tuk-vue"
   description                = "Live vue application"
   logo_uri                   = "https://trigpointing.me/TUK-Logo.svg"
@@ -38,6 +38,6 @@ resource "auth0_client" "tuk" {
 }
 
 output "tuk-vue-client-id" {
-  value = auth0_client.tuk.client_id
+  value = auth0_client.tuk-vue.client_id
 
 }

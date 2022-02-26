@@ -1,5 +1,8 @@
-resource "auth0_connection" "tme" {
-  name     = "tme-users"
+resource "auth0_connection" "tuk-users" {
+  name     = "tuk-users"
+  enabled_clients = [ 
+    auth0_client.tuk-vue.id
+  ]
   strategy = "auth0"
   options {
     requires_username = "false"
@@ -20,10 +23,5 @@ resource "auth0_connection" "tme" {
     brute_force_protection         = true
     enabled_database_customization = false
     set_user_root_attributes       = "on_each_login"
-
-    configuration = {
-      foo = "bar"
-      bar = "baz"
-    }
   }
 }

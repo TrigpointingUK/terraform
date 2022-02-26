@@ -33,7 +33,7 @@ module "gcr_cleaner" {
       parameters = {
         grace      = "24h"
         keep       = 1
-        tag_filter_all = "^(.{1,2}|.{4,}|[^t])$"
+        tag_filter_all = "^(.{1,2}|.{4,}|[^t]??)$"
       }
     }    
   ]

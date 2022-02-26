@@ -1,4 +1,4 @@
-resource "auth0_client" "tdev" {
+resource "auth0_client" "tdev-vue" {
   name                       = "tdev-vue"
   description                = "Local vue application"
   logo_uri                   = "https://trigpointing.me/TDEV-Logo.svg"
@@ -38,6 +38,6 @@ resource "auth0_client" "tdev" {
 }
 
 output "tdev-vue-client-id" {
-  value = auth0_client.tdev.client_id
+  value = auth0_client.tdev-vue.client_id
 
 }
