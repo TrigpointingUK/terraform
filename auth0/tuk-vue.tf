@@ -39,5 +39,4 @@ resource "auth0_client" "tuk-vue" {
 
 output "tuk-vue-client-id" {
   value = auth0_client.tuk-vue.client_id
-
 }

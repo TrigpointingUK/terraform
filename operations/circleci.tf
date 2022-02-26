@@ -125,12 +125,24 @@ resource "circleci_environment_variable" "tuk_vue_tag" {
   value   = local.tuk_vue_tag
 }
 
+# Obtain clientids from remote auth0 terraform state
+
+data "terraform_remote_state" "auth0" {
+  backend = "gcs"
+
+  config = {
+    bucket = "trigpointinguk-tfstate"
+    prefix = "trigpointinguk-auth0"
+    impersonate_service_account = "terraform@trigpointinguk.iam.gserviceaccount.com"
+  }
+}
+
 resource "circleci_environment_variable" "tme_vue_auth0" {
   provider = circleci
 
   project = "vue"
   name    = "TME_AUTH0_CLIENTID"
-  value   = "${file("tme_vue_auth0_clientid")}"
+  value   = data.terraform_remote_state.auth0.outputs.tme-vue-client-id
 }
 
 resource "circleci_environment_variable" "tuk_vue_auth0" {
@@ -138,5 +150,24 @@ resource "circleci_environment_variable" "tuk_vue_auth0" {
 
   project = "vue"
   name    = "TUK_AUTH0_CLIENTID"
-  value   = "${file("tuk_vue_auth0_clientid")}"
+  value   = data.terraform_remote_state.auth0.outputs.tuk-vue-client-id
+}
+
+
+# Ouput all client ids, even those not used by circle-ci
+
+output "tdev-vue-client-id" {
+  value = data.terraform_remote_state.auth0.outputs.tdev-vue-client-id
+}
+
+output "tme-vue-client-id" {
+  value = data.terraform_remote_state.auth0.outputs.tme-vue-client-id
+}
+
+output "tme-swagger-client-id" {
+  value = data.terraform_remote_state.auth0.outputs.tme-swagger-client-id
+}
+
+output "tuk-vue-client-id" {
+  value = data.terraform_remote_state.auth0.outputs.tuk-vue-client-id
 }

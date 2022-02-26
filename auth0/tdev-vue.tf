@@ -39,5 +39,4 @@ resource "auth0_client" "tdev-vue" {
 
 output "tdev-vue-client-id" {
   value = auth0_client.tdev-vue.client_id
-
 }
