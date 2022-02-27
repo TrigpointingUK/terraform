@@ -32,3 +32,5 @@ override.tf.json
 **/*_clientid
 **/*_clientsecret
 **/*_apikey
+
+**/trigpointing-facebook.tf

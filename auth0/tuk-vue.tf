@@ -7,7 +7,7 @@ resource "auth0_client" "tuk-vue" {
   is_first_party             = true
   token_endpoint_auth_method = "none"
   # initiate_login_uri = "http://localhost/login"
-  callbacks           = ["https://vue.trigpointing.uk/", "https://vue.trigpointing.uk/auth0", "https://api.vue.trigpointing.uk/docs/oauth2-redirect"]
+  callbacks           = ["https://vue.trigpointing.uk/", "https://vue.trigpointing.uk/auth0", "https://api.trigpointing.uk/docs/oauth2-redirect"]
   allowed_logout_urls = ["https://vue.trigpointing.uk/", "https://vue.trigpointing.uk/about"]
   web_origins         = ["https://vue.trigpointing.uk/"]
   allowed_origins     = []
