@@ -59,7 +59,7 @@ provider "google-beta" {
 
 provider "auth0" {
   domain        = "trigpointing.eu.auth0.com"
-  client_id     = file("auth0_clientid")
-  client_secret = file("auth0_clientsecret")
+  client_id     = file("_auth0_clientid")
+  client_secret = file("_auth0_clientsecret")
   debug         = "true"
 }

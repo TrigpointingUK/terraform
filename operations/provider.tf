@@ -57,7 +57,7 @@ provider "google-beta" {
 }
 
 provider "circleci" {
-  api_token    = file("circleci_token")
+  api_token    = file("_circleci_token")
   vcs_type     = "github"
   organization = "TrigpointingUK"
 }

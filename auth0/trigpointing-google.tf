@@ -8,8 +8,8 @@ resource "auth0_connection" "google" {
   ]
   strategy = "google-oauth2"
   options {
-    client_id = file("google_clientid")
-    client_secret = file("google_clientsecret")
+    client_id = file("_google_clientid")
+    client_secret = file("_google_clientsecret")
     scopes = [ "profile",  "email" ]
     set_user_root_attributes = "on_each_login"
     # allowed_audiences = [ "example.com", "api.example.com" ]

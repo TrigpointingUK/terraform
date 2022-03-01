@@ -30,9 +30,9 @@ resource "auth0_client" "tdev-vue" {
     infinite_token_lifetime      = false
     idle_token_lifetime          = 1296000
   }
-#   client_metadata = {
-#     created_by = "terraform"
-#   }
+  client_metadata = {
+    created_by = "terraform"
+  }
   addons {}
   mobile {}
 }

@@ -4,7 +4,7 @@ resource "auth0_email" "mailgun" {
   default_from_address = "auth@mg.trigpointing.uk"
   credentials {
     domain  = "mg.trigpointing.uk"
-    api_key = file("mailgun_apikey")
+    api_key = file("_mailgun_apikey")
     region  = "eu"
   }
 }

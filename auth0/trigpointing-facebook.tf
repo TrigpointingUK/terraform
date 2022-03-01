@@ -8,8 +8,8 @@ resource "auth0_connection" "facebook" {
   ]
   strategy = "facebook"
   options {
-    client_id = file("facebook_clientid")
-    client_secret = file("facebook_clientsecret")
+    client_id = file("_facebook_clientid")
+    client_secret = file("_facebook_clientsecret")
     scopes = [ "public_profile",  "email" ]
     set_user_root_attributes = "on_each_login"
   }
