@@ -14,7 +14,7 @@ resource "auth0_client" "tdev-vue" {
   oidc_conformant     = true
   grant_types         = ["authorization_code", "implicit", "refresh_token"]
   jwt_configuration {
-    lifetime_in_seconds = 60
+    lifetime_in_seconds = 36000
     secret_encoded      = true
     alg                 = "RS256"
     scopes = {
@@ -24,15 +24,15 @@ resource "auth0_client" "tdev-vue" {
   refresh_token {
     rotation_type                = "rotating"
     expiration_type              = "expiring"
-    leeway                       = 15
-    token_lifetime               = 600
+    leeway                       = 0
+    token_lifetime               = 2592000
     infinite_idle_token_lifetime = false
     infinite_token_lifetime      = false
-    idle_token_lifetime          = 300
+    idle_token_lifetime          = 1296000
   }
-  client_metadata = {
-    created_by = "terraform"
-  }
+#   client_metadata = {
+#     created_by = "terraform"
+#   }
   addons {}
   mobile {}
 }

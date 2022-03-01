@@ -33,4 +33,4 @@ override.tf.json
 **/*_clientsecret
 **/*_apikey
 
-**/trigpointing-facebook.tf
+## TODO: Get these from secrets and push!
