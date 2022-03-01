@@ -14,14 +14,15 @@ terraform {
       source  = "hashicorp/google-beta"
       version = "~> 4.8"
     }
-    circleci = {
-      source  = "mrolla/circleci"
-      version = "~> 0.6.1"
+
+    auth0 = {
+      source  = "auth0/auth0"
+      version = "0.27.1"
     }
   }
   backend "gcs" {
     bucket                      = "trigpointinguk-tfstate"
-    prefix                      = "trigpointinguk-operations"
+    prefix                      = "trigpointinguk-auth0"
     impersonate_service_account = "terraform@trigpointinguk.iam.gserviceaccount.com"
   }
 }
@@ -56,8 +57,9 @@ provider "google-beta" {
   request_timeout = "60s"
 }
 
-provider "circleci" {
-  api_token    = file("_circleci_token")
-  vcs_type     = "github"
-  organization = "TrigpointingUK"
+provider "auth0" {
+  domain        = "trigpointing.eu.auth0.com"
+  client_id     = file("_auth0_clientid")
+  client_secret = file("_auth0_clientsecret")
+  debug         = "true"
 }

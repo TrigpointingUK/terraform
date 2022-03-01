@@ -28,5 +28,7 @@ override.tf.json
 # Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
 # example: *tfplan*
 
-**/*_token
-**/*_clientid
+# Prefix secret files with _
+**/_*
+
+## TODO: Get these from secrets and push!
