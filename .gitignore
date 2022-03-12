@@ -30,5 +30,4 @@ override.tf.json
 
 # Prefix secret files with _
 **/_*
-
-## TODO: Get these from secrets and push!
+*.pem
