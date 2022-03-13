@@ -27,7 +27,7 @@ resource "google_project_iam_member" "cloudrun_secret_iam" {
 resource "google_project_iam_member" "cloudrun_sql_iam" {
   for_each = google_service_account.cloudrun
   member   = "serviceAccount:${each.value.email}"
-  # role     = "roles/cloudsql.client"  # TODO switch to this for security
+  # role     = "roles/cloudsql.client"
   role    = "roles/cloudsql.admin"
   project = var.project
 }
@@ -102,9 +102,9 @@ resource "google_cloud_run_domain_mapping" "api-tuk" {
 #   rrdatas = [google_cloud_run_domain_mapping.api-tuk.status[0].resource_records[0].rrdata]
 # }
 
-# output "api_trigpointing_uk_cname" {
-#     value = google_cloud_run_domain_mapping.api-tuk.status[0].resource_records[0].rrdata
-# }
+output "api_trigpointing_uk_cname" {
+  value = google_cloud_run_domain_mapping.api-tuk.status[0].resource_records[0].rrdata
+}
 
 
 

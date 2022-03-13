@@ -1,33 +1,12 @@
-# resource "google_compute_network" "private_network" {
-#   name = "private-network"
-# }
-
-# resource "google_compute_global_address" "private_ip_address" {
-#   name          = "private-ip-address"
-#   purpose       = "VPC_PEERING"
-#   address_type  = "INTERNAL"
-#   prefix_length = 16
-#   network       = google_compute_network.private_network.id
-# }
-
-# resource "google_service_networking_connection" "private_vpc_connection" {
-#   network                 = google_compute_network.private_network.id
-#   service                 = "servicenetworking.googleapis.com"
-#   reserved_peering_ranges = [google_compute_global_address.private_ip_address.name]
-# }
-
 resource "random_id" "db_name_suffix" {
   byte_length = 4
 }
-
 
 resource "google_sql_database_instance" "trigpointing" {
   name                = "trigpointing-${random_id.db_name_suffix.hex}"
   database_version    = "POSTGRES_14"
   deletion_protection = false
   region              = "europe-west1"
-  # depends_on          = [google_service_networking_connection.private_vpc_connection]
-
   settings {
     tier              = "db-f1-micro"
     disk_type         = "PD_HDD"
@@ -41,11 +20,6 @@ resource "google_sql_database_instance" "trigpointing" {
     ip_configuration {
       ipv4_enabled = true
       require_ssl  = true
-      # authorized_networks {
-      # name  = "BT ADSL"
-      # value = "86.165.113.137/32"
-      # }
-      # private_network = google_compute_network.private_network.id
     }
     database_flags {
       name  = "cloudsql.iam_authentication"
@@ -69,63 +43,80 @@ output "postgres_public_ip_address" {
   value = google_sql_database_instance.trigpointing.public_ip_address
 }
 
-# output "postgres_private_ip_address" {
-#   value = google_compute_global_address.private_ip_address.address
-# }
-
-
-
-# SSL KEY
-# resource "google_sql_ssl_cert" "client_cert" {
-#   common_name = "trigpointing-client"
-#   instance    = google_sql_database_instance.trigpointing.name
-# }
-
-# output "server_ca" {
-#   value     = google_sql_ssl_cert.client_cert.server_ca_cert
-#   sensitive = true
-# }
-# output "client_cert" {
-#   value     = google_sql_ssl_cert.client_cert.cert
-#   sensitive = true
-# }
-# output "cert_expiration" {
-#   value = google_sql_ssl_cert.client_cert.expiration_time
-# }
-
-
+#######
 # USERS
+#######
+
+# Superuser
+resource "google_secret_manager_secret" "postgres" {
+  secret_id = "POSTGRES_PASSWORD"
+  replication {
+    automatic = true
+  }
+}
+resource "google_secret_manager_secret_version" "postgres" {
+  secret      = google_secret_manager_secret.postgres.id
+  secret_data = file("_password_postgres")
+}
+
 resource "google_sql_user" "postgres" {
   name            = "postgres"
   instance        = google_sql_database_instance.trigpointing.name
-  password        = file("_password_postgres")
+  password        = google_secret_manager_secret_version.postgres.secret_data
   deletion_policy = "ABANDON"
 }
 
-resource "google_sql_user" "ian" {
-  name            = "ian"
-  instance        = google_sql_database_instance.trigpointing.name
-  password        = file("_password_ian")
-  deletion_policy = "ABANDON"
+
+# tme
+# CLOUD_IAM_SERVICE_ACCOUNT cannot be used because CloudRun's sql proxy does not -enable_iam_login
+# https://stackoverflow.com/questions/70024078/connecting-to-cloud-sql-from-cloud-run-via-cloud-sql-proxy-with-iam-login-enable
+
+resource "google_secret_manager_secret" "tme" {
+  secret_id = "TME_POSTGRES_PASSWORD"
+  replication {
+    automatic = true
+  }
+}
+resource "google_secret_manager_secret_version" "tme" {
+  secret      = google_secret_manager_secret.tme.id
+  secret_data = file("_password_tme")
 }
 
 resource "google_sql_user" "tme" {
   name            = "tme"
   instance        = google_sql_database_instance.trigpointing.name
-  password        = file("_password_tme")
+  password        = google_secret_manager_secret_version.tme.secret_data
   deletion_policy = "ABANDON"
 
+}
+
+
+
+# tuk
+# CLOUD_IAM_SERVICE_ACCOUNT cannot be used because CloudRun's sql proxy does not -enable_iam_login
+# https://stackoverflow.com/questions/70024078/connecting-to-cloud-sql-from-cloud-run-via-cloud-sql-proxy-with-iam-login-enable
+
+resource "google_secret_manager_secret" "tuk" {
+  secret_id = "TUK_POSTGRES_PASSWORD"
+  replication {
+    automatic = true
+  }
+}
+resource "google_secret_manager_secret_version" "tuk" {
+  secret      = google_secret_manager_secret.tuk.id
+  secret_data = file("_password_tuk")
 }
 
 resource "google_sql_user" "tuk" {
   name            = "tuk"
   instance        = google_sql_database_instance.trigpointing.name
-  password        = file("_password_tuk")
+  password        = google_secret_manager_secret_version.tuk.secret_data
   deletion_policy = "ABANDON"
-
 }
 
-resource "google_sql_user" "users" {
+
+# admin
+resource "google_sql_user" "admin" {
   name            = "admin@trigpointing.uk"
   instance        = google_sql_database_instance.trigpointing.name
   type            = "CLOUD_IAM_USER"
@@ -133,13 +124,13 @@ resource "google_sql_user" "users" {
 }
 
 
-# DATABASES
-resource "google_sql_database" "tuk" {
-  name     = "tuk"
-  instance = google_sql_database_instance.trigpointing.name
-}
+# # DATABASES
+# resource "google_sql_database" "tuk" {
+#   name     = "tuk"
+#   instance = google_sql_database_instance.trigpointing.name
+# }
 
-resource "google_sql_database" "tme" {
-  name     = "tme"
-  instance = google_sql_database_instance.trigpointing.name
-}
+# resource "google_sql_database" "tme" {
+#   name     = "tme"
+#   instance = google_sql_database_instance.trigpointing.name
+# }

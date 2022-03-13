@@ -9,3 +9,11 @@ Requires a file `operations/circleci_token` which contains an organization level
 
 Requires a file for each Auth0 clientid (not secret, but neither should it be checked into git where it could be accidentally
 reused by others). `tme_vue_auth0_clientid`, `tuk_vue_auth0_clientid`
+
+## postgres
+
+Before running the terraform, first start the cloud sql proxy...
+
+```bash
+./cloud_sql_proxy --instances=trigpointinguk:europe-west1:trigpointing-679c4ef1=tcp:5432
+```
