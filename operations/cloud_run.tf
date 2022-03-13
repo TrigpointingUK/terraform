@@ -23,6 +23,16 @@ resource "google_project_iam_member" "cloudrun_secret_iam" {
   project  = var.project
 }
 
+# Allow access to Cloud SQL
+resource "google_project_iam_member" "cloudrun_sql_iam" {
+  for_each = google_service_account.cloudrun
+  member   = "serviceAccount:${each.value.email}"
+  # role     = "roles/cloudsql.client"  # TODO switch to this for security
+  role    = "roles/cloudsql.admin"
+  project = var.project
+}
+
+
 
 # Allow public access to endpoints
 resource "google_cloud_run_service_iam_member" "default" {
