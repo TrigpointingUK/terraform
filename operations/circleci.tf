@@ -9,7 +9,8 @@ resource "google_service_account" "circleci" {
 locals {
   circleci_project_roles = [
     "roles/artifactregistry.repoAdmin",
-    "roles/run.developer",
+    "roles/run.admin",
+    "roles/serviceusage.serviceUsageViewer"
   ]
 }
 resource "google_project_iam_member" "circleci_project_roles" {
@@ -90,6 +91,15 @@ resource "circleci_environment_variable" "api_tag" {
 output "api_tag" {
   value = local.api_tag
 }
+
+resource "circleci_environment_variable" "api_postgres_connection" {
+  provider = circleci
+
+  project = "api"
+  name    = "POSTGRES_CONNECTION"
+  value   = google_sql_database_instance.trigpointing.connection_name
+}
+
 
 ### VUE
 
