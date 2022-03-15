@@ -14,8 +14,19 @@ resource "google_sql_database_instance" "trigpointing" {
     disk_autoresize   = false
     activation_policy = "ALWAYS"
     availability_type = "ZONAL"
+    maintenance_window {
+      day  = 1
+      hour = 1
+    }
     backup_configuration {
-      enabled = false
+      enabled                        = true
+      point_in_time_recovery_enabled = true
+      transaction_log_retention_days = 7
+      location                       = "eu"
+      backup_retention_settings {
+        retained_backups = 7
+        retention_unit   = "COUNT"
+      }
     }
     ip_configuration {
       ipv4_enabled = true
@@ -27,7 +38,7 @@ resource "google_sql_database_instance" "trigpointing" {
     }
     insights_config {
       query_insights_enabled  = true
-      query_string_length     = 1024
+      query_string_length     = 4500
       record_application_tags = true
       record_client_address   = true
     }
