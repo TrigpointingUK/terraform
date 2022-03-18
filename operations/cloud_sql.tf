@@ -6,7 +6,7 @@ resource "google_sql_database_instance" "trigpointing" {
   name                = "trigpointing-${random_id.db_name_suffix.hex}"
   database_version    = "POSTGRES_14"
   deletion_protection = false
-  region              = "europe-west1"
+  region              = var.region
   settings {
     tier              = "db-f1-micro"
     disk_type         = "PD_HDD"
@@ -22,7 +22,7 @@ resource "google_sql_database_instance" "trigpointing" {
       enabled                        = true
       point_in_time_recovery_enabled = true
       transaction_log_retention_days = 7
-      location                       = "eu"
+      location                       = var.multiregion
       backup_retention_settings {
         retained_backups = 7
         retention_unit   = "COUNT"
@@ -47,6 +47,9 @@ resource "google_sql_database_instance" "trigpointing" {
 output "postgres_name" {
   value = google_sql_database_instance.trigpointing.name
 }
+output "postgres_selflink" {
+  value = google_sql_database_instance.trigpointing.self_link
+}
 output "postgres_connection_name" {
   value = google_sql_database_instance.trigpointing.connection_name
 }
@@ -54,11 +57,10 @@ output "postgres_public_ip_address" {
   value = google_sql_database_instance.trigpointing.public_ip_address
 }
 
-#######
-# USERS
-#######
 
-# Superuser
+# postgres user
+# Created automatically by CloudSQL with a blank password
+# We set the password here to ensure it's available in the postgres terraform 
 resource "google_secret_manager_secret" "postgres" {
   secret_id = "POSTGRES_PASSWORD"
   replication {
@@ -78,52 +80,52 @@ resource "google_sql_user" "postgres" {
 }
 
 
-# tme
-# CLOUD_IAM_SERVICE_ACCOUNT cannot be used because CloudRun's sql proxy does not -enable_iam_login
-# https://stackoverflow.com/questions/70024078/connecting-to-cloud-sql-from-cloud-run-via-cloud-sql-proxy-with-iam-login-enable
+# # tme
+# # CLOUD_IAM_SERVICE_ACCOUNT cannot be used because CloudRun's sql proxy does not -enable_iam_login
+# # https://stackoverflow.com/questions/70024078/connecting-to-cloud-sql-from-cloud-run-via-cloud-sql-proxy-with-iam-login-enable
 
-resource "google_secret_manager_secret" "tme" {
-  secret_id = "TME_POSTGRES_PASSWORD"
-  replication {
-    automatic = true
-  }
-}
-resource "google_secret_manager_secret_version" "tme" {
-  secret      = google_secret_manager_secret.tme.id
-  secret_data = file("_password_tme")
-}
+# resource "google_secret_manager_secret" "tme" {
+#   secret_id = "TME_POSTGRES_PASSWORD"
+#   replication {
+#     automatic = true
+#   }
+# }
+# resource "google_secret_manager_secret_version" "tme" {
+#   secret      = google_secret_manager_secret.tme.id
+#   secret_data = file("_password_tme")
+# }
 
-resource "google_sql_user" "tme" {
-  name            = "tme"
-  instance        = google_sql_database_instance.trigpointing.name
-  password        = google_secret_manager_secret_version.tme.secret_data
-  deletion_policy = "ABANDON"
+# resource "google_sql_user" "tme" {
+#   name            = "tme"
+#   instance        = google_sql_database_instance.trigpointing.name
+#   password        = google_secret_manager_secret_version.tme.secret_data
+#   deletion_policy = "ABANDON"
 
-}
+# }
 
 
 
-# tuk
-# CLOUD_IAM_SERVICE_ACCOUNT cannot be used because CloudRun's sql proxy does not -enable_iam_login
-# https://stackoverflow.com/questions/70024078/connecting-to-cloud-sql-from-cloud-run-via-cloud-sql-proxy-with-iam-login-enable
+# # tuk
+# # CLOUD_IAM_SERVICE_ACCOUNT cannot be used because CloudRun's sql proxy does not -enable_iam_login
+# # https://stackoverflow.com/questions/70024078/connecting-to-cloud-sql-from-cloud-run-via-cloud-sql-proxy-with-iam-login-enable
 
-resource "google_secret_manager_secret" "tuk" {
-  secret_id = "TUK_POSTGRES_PASSWORD"
-  replication {
-    automatic = true
-  }
-}
-resource "google_secret_manager_secret_version" "tuk" {
-  secret      = google_secret_manager_secret.tuk.id
-  secret_data = file("_password_tuk")
-}
+# resource "google_secret_manager_secret" "tuk" {
+#   secret_id = "TUK_POSTGRES_PASSWORD"
+#   replication {
+#     automatic = true
+#   }
+# }
+# resource "google_secret_manager_secret_version" "tuk" {
+#   secret      = google_secret_manager_secret.tuk.id
+#   secret_data = file("_password_tuk")
+# }
 
-resource "google_sql_user" "tuk" {
-  name            = "tuk"
-  instance        = google_sql_database_instance.trigpointing.name
-  password        = google_secret_manager_secret_version.tuk.secret_data
-  deletion_policy = "ABANDON"
-}
+# resource "google_sql_user" "tuk" {
+#   name            = "tuk"
+#   instance        = google_sql_database_instance.trigpointing.name
+#   password        = google_secret_manager_secret_version.tuk.secret_data
+#   deletion_policy = "ABANDON"
+# }
 
 
 # admin
@@ -133,15 +135,3 @@ resource "google_sql_user" "admin" {
   type            = "CLOUD_IAM_USER"
   deletion_policy = "ABANDON"
 }
-
-
-# # DATABASES
-# resource "google_sql_database" "tuk" {
-#   name     = "tuk"
-#   instance = google_sql_database_instance.trigpointing.name
-# }
-
-# resource "google_sql_database" "tme" {
-#   name     = "tme"
-#   instance = google_sql_database_instance.trigpointing.name
-# }
