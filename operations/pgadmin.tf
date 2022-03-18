@@ -4,6 +4,7 @@ resource "google_secret_manager_secret" "pgadmin-config" {
     automatic = true
   }
 }
+
 resource "google_secret_manager_secret_version" "pgadmin-config" {
   secret      = google_secret_manager_secret.pgadmin-config.id
   secret_data = <<EOT
@@ -14,7 +15,7 @@ resource "google_secret_manager_secret_version" "pgadmin-config" {
       "Group": "Trigpointing",
       "Port": 5432,
       "Username": "postgres",
-      "Host": "/cloudsql/${data.terraform_remote_state.operations.outputs.postgres_connection_name}",
+      "Host": "/cloudsql/${google_sql_database_instance.trigpointing.connection_name}",
       "SSLMode": "disable",
       "MaintenanceDB": "postgres"
     }
@@ -33,12 +34,12 @@ resource "google_cloud_run_service" "pgadmin" {
       annotations = {
         "autoscaling.knative.dev/minScale"      = "0"
         "autoscaling.knative.dev/maxScale"      = "1"
-        "run.googleapis.com/cloudsql-instances" = data.terraform_remote_state.operations.outputs.postgres_connection_name
+        "run.googleapis.com/cloudsql-instances" = google_sql_database_instance.trigpointing.connection_name
         "run.googleapis.com/client-name"        = "terraform"
       }
     }
     spec {
-      service_account_name = "api-tme@trigpointinguk.iam.gserviceaccount.com"
+      service_account_name = "pgadmin@trigpointinguk.iam.gserviceaccount.com"
       containers {
         image = "europe-west1-docker.pkg.dev/trigpointinguk/images/pgadmin4:6"
 

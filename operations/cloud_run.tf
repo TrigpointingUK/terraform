@@ -4,6 +4,7 @@ locals {
     "api-tuk",
     "vue-tme",
     "vue-tuk",
+    "pgadmin",
   ]
 }
 
@@ -27,8 +28,8 @@ resource "google_project_iam_member" "cloudrun_secret_iam" {
 resource "google_project_iam_member" "cloudrun_sql_iam" {
   for_each = google_service_account.cloudrun
   member   = "serviceAccount:${each.value.email}"
-  # role     = "roles/cloudsql.client"
-  role    = "roles/cloudsql.admin"
+  role     = "roles/cloudsql.client"
+  # role    = "roles/cloudsql.admin"
   project = var.project
 }
 
@@ -168,3 +169,32 @@ resource "google_cloud_run_domain_mapping" "vue-tuk" {
 # output "vue_trigpointing_uk_cname" {
 #     value = google_cloud_run_domain_mapping.vue-tuk.status[0].resource_records[0].rrdata
 # }
+
+
+
+
+# Map pgadmin.trigpointing.me domain
+resource "google_cloud_run_domain_mapping" "pgadmin" {
+  location = var.region
+  name     = "pgadmin.trigpointing.me"
+  metadata {
+    namespace = var.project
+  }
+  spec {
+    route_name = google_cloud_run_service.pgadmin.name
+  }
+}
+
+resource "google_dns_record_set" "pgadmin" {
+  name         = "pgadmin.${google_dns_managed_zone.tme-zone.dns_name}"
+  type         = "CNAME"
+  ttl          = 300
+  managed_zone = google_dns_managed_zone.tme-zone.name
+  rrdatas      = [google_cloud_run_domain_mapping.pgadmin.status[0].resource_records[0].rrdata]
+}
+
+output "pgadmin_trigpointing_me_cname" {
+  value = google_cloud_run_domain_mapping.pgadmin.status[0].resource_records[0].rrdata
+}
+
+

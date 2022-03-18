@@ -6,47 +6,47 @@ module "gcr_cleaner" {
   cloud_scheduler_job_schedule    = "0 0 * * *"
 
   gar_repositories = [
-    # {
-    #   name       = "images/tme-vue"
-    #   region     = var.region
-    #   project_id = var.project
-    #   parameters = {
-    #     grace          = "24h"
-    #     keep           = 1
-    #     tag_filter_all = "^([^t]|t(t|mt)*([^mt]|m[^et]))*(t(t|mt)*m?)?$"
-    #   }
-    # },
-    # {
-    #   name       = "images/tuk-vue"
-    #   region     = var.region
-    #   project_id = var.project
-    #   parameters = {
-    #     grace          = "24h"
-    #     keep           = 1
-    #     tag_filter_all = "^([^t]|t(t|ut)*([^tu]|u[^kt]))*(t(t|ut)*u?)?$"
-    #   }
-    # },
-    # {
-    #   name       = "images/tuk-api"
-    #   region     = var.region
-    #   project_id = var.project
-    #   parameters = {
-    #     grace          = "24h"
-    #     keep           = 1
-    #     tag_filter_all = "^(.{1,2}|.{4,}|[^t].{2})$"
-    #   }
-    # }
     {
-      name       = "images"
+      name       = "images/tme-vue"
       region     = var.region
       project_id = var.project
       parameters = {
-        # grace          = "24h"
-        # keep           = 1
-        grace          = "0h"
-        keep           = 0
+        grace          = "24h"
+        keep           = 1
+        tag_filter_all = "^([^t]|t(t|mt)*([^mt]|m[^et]))*(t(t|mt)*m?)?$"
+      }
+    },
+    {
+      name       = "images/tuk-vue"
+      region     = var.region
+      project_id = var.project
+      parameters = {
+        grace          = "24h"
+        keep           = 1
+        tag_filter_all = "^([^t]|t(t|ut)*([^tu]|u[^kt]))*(t(t|ut)*u?)?$"
+      }
+    },
+    {
+      name       = "images/tuk-api"
+      region     = var.region
+      project_id = var.project
+      parameters = {
+        grace          = "24h"
+        keep           = 1
         tag_filter_all = "^(.{1,2}|.{4,}|[^t].{2})$"
       }
     }
+    # {
+    #   name       = "images"
+    #   region     = var.region
+    #   project_id = var.project
+    #   parameters = {
+    #     # grace          = "24h"
+    #     # keep           = 1
+    #     grace          = "0h"
+    #     keep           = 0
+    #     tag_filter_all = "^(.{1,2}|.{4,}|[^t].{2})$"
+    #   }
+    # }
   ]
 }
